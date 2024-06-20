@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('payer')->index();
             $table->unsignedBigInteger('payee')->index();
             $table->decimal('amount')->default(0);
+            $table->timestamp('delivered_at')->nullable();
             $table->foreign('payer')->references('id')->on('users');
             $table->foreign('payee')->references('id')->on('users');
             $table->timestamps();
