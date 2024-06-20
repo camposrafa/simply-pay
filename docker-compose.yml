@@ -59,6 +59,25 @@ services:
     networks:
       - simply_pay_net
 
+  simply-pay-worker:
+    build:
+      context: ./
+      dockerfile: ./build/super/Dockerfile
+      args:
+        VERSION: ${VERSION}
+        PROGRAM_NAME: "default_worker"
+        QUEUE_CONNECTION: ${QUEUE_CONNECTION}
+        QUEUES: "default"
+        LOG_FILE: "queue_worker_default"
+        PROCESS_NUM: ${WORKER_PROCESS_NUM:-8}
+    container_name: simply-pay-worker
+    depends_on:
+      - simply-pay-php
+    restart: unless-stopped
+    volumes:
+      - .:/var/www:cached
+    networks:
+      - simply_pay_net
 volumes:
   simply_pay_data:
 

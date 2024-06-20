@@ -4,6 +4,8 @@ namespace App\Domain\Models;
 
 use App\Domain\Enum\User\Document;
 use App\Domain\Enum\User\Type;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -222,5 +224,42 @@ class User extends Authenticatable
         $this->balance = $balance;
 
         return $this;
+    }
+
+    public function getCreatedAt(): ?Carbon
+    {
+        return $this->created_at;
+    }
+
+    public function getUpdatedAt(): ?Carbon
+    {
+        return $this->updated_at;
+    }
+
+    public function getDeletedAt(): ?Carbon
+    {
+        return $this->deleted_at;
+    }
+
+    /**
+     * @return Collection|null
+     */
+    public function getPayment(): ?Collection
+    {
+        return $this->payment()->get();
+    }
+
+    /**
+     * @return Collection|null
+     */
+    public function setPayment(Payment $payment): self
+    {
+        $this->payment = $payment;
+        return $this;
+    }
+
+    public function payment()
+    {
+        return $this->hasMany(Payment::class);
     }
 }
