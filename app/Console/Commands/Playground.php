@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Domain\Application\Auth\Logout\Command as LogoutCommand;
 use App\Domain\Application\Auth\Logout\Handler;
+use App\Domain\Application\Jobs\User\Notifier;
 use App\Domain\Application\Payment\Create\Command as CreateCommand;
 use App\Domain\Application\Payment\Create\Handler as CreateHandler;
 use App\Domain\Infra\RmFinances\CheckerRepository;
@@ -32,10 +33,6 @@ class Playground extends Command
      */
     public function handle()
     {
-        App::make(CreateHandler::class)->handle(new CreateCommand(
-            User::where('id', '=', 1)->first(),
-            2,
-            25.99
-        ));
+        Notifier::dispatch(User::find(1));
     }
 }

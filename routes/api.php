@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\LoggedController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Payment\CreateController as CreatePaymentController;
+use App\Http\Controllers\Payment\ListController as ListPaymentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,9 +21,12 @@ use Illuminate\Support\Facades\Route;
 Route::post('auth', [LoginController::class, 'login']);
 
 Route::middleware('auth:api')->group(function () {
+
     //access control route
-    Route::delete('auth', [LogoutController::class, 'logout']);
+    Route::get('logged', [LoggedController::class, 'logged']);
+    Route::delete('logout', [LogoutController::class, 'logout']);
 
     //payment routes
     Route::post('payment', [CreatePaymentController::class, 'store']);
+    Route::get('payment', [ListPaymentController::class, 'list']);
 });

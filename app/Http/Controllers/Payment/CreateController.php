@@ -6,6 +6,7 @@ use App\Domain\Application\Payment\Create\Command;
 use App\Domain\Application\Payment\Create\Handler;
 use App\Domain\Models\UserShopKeeper;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Payment\Payment;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -27,6 +28,6 @@ class CreateController extends Controller
             $request->get('amount'),
         );
 
-        return $this->handler->handle($paymentCommand);
+        return new Payment($this->handler->handle($paymentCommand));
     }
 }

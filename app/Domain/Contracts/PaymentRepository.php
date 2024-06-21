@@ -20,8 +20,8 @@ interface PaymentRepository
     public function getOne(array $filter): ?Payment;
 
     /**
-     * @param array $filter
-     * @return Payment|null
+     * @param array|null $filter
+     * @return LazyCollection|null
      */
-    public function getAll(array $filter): ?LazyCollection;
+    public function getAll(array $filter = null): ?LazyCollection;
 }
