@@ -19,13 +19,8 @@ class CheckerRepository extends GuzzleClient
     }
 
     /** @inheritDoc */
-    public function notifier(): bool
+    public function notifier()
     {
-        try {
-            $this->request('POST', 'https://util.devi.tools/api/v1/notify', []);
-            return true;
-        } catch (Exception $ex) {
-            return false;
-        }
+        return $this->request('POST', 'https://util.devi.tools/api/v1/notify', []);
     }
 }
