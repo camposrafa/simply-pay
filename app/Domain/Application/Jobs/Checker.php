@@ -2,13 +2,13 @@
 
 namespace App\Domain\Application\Jobs;
 
+use App\Domain\Enum\Payment\Status;
 use App\Domain\Infra\Eloquent\PaymentRepository;
 use App\Domain\Infra\Eloquent\UserRepository;
 use App\Domain\Infra\RmFinances\CheckerRepository;
 use App\Domain\Models\Payment;
 use App\Domain\Models\User;
 use Carbon\Carbon;
-use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -16,10 +16,9 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\App;
 
-class Checker extends CheckerRepository implements ShouldQueue
+class Checker implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
     /**
      * Create a new job instance.
      */
@@ -33,19 +32,24 @@ class Checker extends CheckerRepository implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(): bool
+    public function handle(): Payment
     {
-        if (!$this->authorize()) {
-            throw new Exception('transaction cant be completed. Try again later');
-        }
-
         $userRepository = App::make(UserRepository::class);
         $paymentRepository = App::make(PaymentRepository::class);
+        $checkerRepository = App::make(CheckerRepository::class);
 
-        $userRepository->save($this->payer->setAmount($this->payer->getBalance() - $this->payment->getAmount()));
-        $userRepository->save($this->payee->setAmount($this->payee->getBalance() + $this->payment->getAmount()));
-        $paymentRepository->save($this->payment->setDeliveredAt(Carbon::now()));
+        if ($checkerRepository->authorize()) {
+            $userRepository->save($this->payer->setBalance($this->payer->getBalance() - $this->payment->getAmount()));
+            $userRepository->save($this->payee->setBalance($this->payee->getBalance() + $this->payment->getAmount()));
+            $payment = $paymentRepository->save(
+                $this->payment
+                    ->setDeliveredAt(Carbon::now())
+                    ->setStatus(Status::success)
+            );
+        } else {
+            $payment = $paymentRepository->save($this->payment->setStatus(Status::fail));
+        }
 
-        return true;
+        return $payment;
     }
 }

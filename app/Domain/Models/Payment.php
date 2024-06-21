@@ -2,6 +2,7 @@
 
 namespace App\Domain\Models;
 
+use App\Domain\Enum\Payment\Status;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,6 +23,16 @@ class Payment extends Model
         'payee_id',
         'amount',
         'delivered_at',
+        'status'
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'status' => Status::class,
     ];
 
     public function getId(): int
@@ -171,6 +182,26 @@ class Payment extends Model
     public function setUuid($uuid): self
     {
         $this->uuid = $uuid;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of status
+     */
+    public function getStatus(): Status
+    {
+        return $this->status;
+    }
+
+    /**
+     * Set the value of status
+     *
+     * @return  self
+     */
+    public function setStatus($status): self
+    {
+        $this->status = $status;
 
         return $this;
     }
