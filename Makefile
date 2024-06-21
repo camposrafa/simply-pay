@@ -36,6 +36,14 @@ app-key:
 		docker container exec -ti simply-pay-php php artisan key:generate; \
 	fi
 
+cache:
+	@echo "Caching application..."
+	@docker container exec -ti simply-pay-php php artisan optimize && \
+	docker container exec -ti simply-pay-php php artisan view:cache && \
+	docker container exec -ti simply-pay-php php artisan event:cache && \
+	docker container exec -ti simply-pay-php php artisan package:discover && \
+	docker container exec -ti simply-pay-php php artisan auth:clear-resets
+
 migrate:
 	@echo "Migrating database..."
 	@docker container exec -ti -ti simply-pay-php php artisan migrate

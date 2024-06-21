@@ -13,11 +13,14 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('payer')->index();
-            $table->unsignedBigInteger('payee')->index();
+            $table->uuid('uuid');
+            $table->unsignedBigInteger('payer_id')->index();
+            $table->unsignedBigInteger('payee_id')->index();
             $table->decimal('amount')->default(0);
-            $table->foreign('payer')->references('id')->on('users');
-            $table->foreign('payee')->references('id')->on('users');
+            $table->timestamp('delivered_at')->nullable();
+            $table->enum('status', ['success', 'fail']);
+            $table->foreign('payer_id')->references('id')->on('users');
+            $table->foreign('payee_id')->references('id')->on('users');
             $table->timestamps();
             $table->softDeletes();
         });

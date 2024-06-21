@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\Payment\CreateController as CreatePaymentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,6 +18,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('auth', [LoginController::class, 'login']);
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:api')->group(function () {
+    //access control route
     Route::delete('auth', [LogoutController::class, 'logout']);
+
+    //payment routes
+    Route::post('payment', [CreatePaymentController::class, 'store']);
 });

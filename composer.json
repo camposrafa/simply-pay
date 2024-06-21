@@ -10,7 +10,8 @@
         "laravel/framework": "^10.10",
         "laravel/passport": "^12.2",
         "laravel/tinker": "^2.8",
-        "nanigans/single-table-inheritance": "^1.0"
+        "nanigans/single-table-inheritance": "^1.0",
+        "predis/predis": "^2.2"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
