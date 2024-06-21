@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('payee_id')->index();
             $table->decimal('amount')->default(0);
             $table->timestamp('delivered_at')->nullable();
-            $table->enum('status', ['success', 'fail']);
+            $table->enum('status', ['success', 'fail', 'processing'])->default('processing');
             $table->foreign('payer_id')->references('id')->on('users');
             $table->foreign('payee_id')->references('id')->on('users');
             $table->timestamps();

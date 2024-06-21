@@ -6,4 +6,5 @@ enum Status: string
 {
     case success = 'success';
     case fail = 'fail';
+    case processing = 'processing';
 }
