@@ -2,20 +2,30 @@
 
 namespace App\Domain\Infra\RmFinances;
 
+use Exception;
 use GuzzleHttp\Client as GuzzleClient;
-use GuzzleHttp\Psr7\Response;
 
 class CheckerRepository extends GuzzleClient
 {
     /** @inheritDoc */
-    public function authorize(): mixed
+    public function authorize(): bool
     {
-        return $this->getHttpClient()->get('https://util.devi.tools/api/v2/authorize');
+        try {
+            $this->request('GET', 'https://util.devi.tools/api/v2/authorize', []);
+            return true;
+        } catch (Exception $ex) {
+            return false;
+        }
     }
 
     /** @inheritDoc */
-    public function notifier(): mixed
+    public function notifier(): bool
     {
-        return $this->getHttpClient()->post('https://util.devi.tools/api/v1/notify');
+        try {
+            $this->request('POST', 'https://util.devi.tools/api/v1/notify', []);
+            return true;
+        } catch (Exception $ex) {
+            return false;
+        }
     }
 }
