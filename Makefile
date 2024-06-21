@@ -28,7 +28,7 @@ down-v:
 
 up-necessary:
 	@echo "Uping necessary containers..."
-	docker-compose up -d simply-pay-php simply-pay-db simply-pay-nginx
+	docker-compose up -d simply-pay-redis simply-pay-php simply-pay-db simply-pay-nginx
 
 app-key:
 	@if [ -z "$(APP_KEY)" ]; then \

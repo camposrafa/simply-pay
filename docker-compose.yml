@@ -6,6 +6,9 @@ services:
     build:
       context: ./
       dockerfile: ./build/docker/Dockerfile
+      args:
+        UID: ${UID}
+        php_opc_timestamps: ${PHP_OPC_TIMESTAMPS:-0}
     container_name: simply-pay-php
     restart: unless-stopped
     volumes:
@@ -41,6 +44,18 @@ services:
     volumes:
       - .:/var/www:cached
       - ./build/nginx:/etc/nginx/conf.d/:cached
+    networks:
+      - simply_pay_net
+
+  simply-pay-redis:
+    image: redis
+    container_name: simply-pay-redis
+    restart: unless-stopped
+    command: redis-server --requirepass root_pass --appendonly yes
+    ports:
+      - "${REDIS_PORT}:6379"
+    volumes:
+      - .:/var/www:cached
     networks:
       - simply_pay_net
 
