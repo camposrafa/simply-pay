@@ -46,10 +46,7 @@ class Payment extends Model
         return $this;
     }
 
-    /**
-     * Get the value of delivered_at
-     */
-    public function getDeliveredAt(): ?Carbon
+    public function getDeliveredAt()
     {
         return $this->delivered_at;
     }
@@ -223,11 +220,11 @@ class Payment extends Model
 
     public function payee()
     {
-        $this->hasOne(User::class);
+        return $this->hasOne(User::class, 'id', 'payee_id');
     }
 
     public function payer()
     {
-        $this->hasOne(User::class);
+        return $this->hasOne(User::class, 'id', 'payer_id');
     }
 }

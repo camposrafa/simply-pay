@@ -24,7 +24,7 @@ class PaymentRepository implements PaymentRepositoryInterface
     }
 
     /** @inheritDoc */
-    public function getAll(array $filter): ?LazyCollection
+    public function getAll(array $filter = null): ?LazyCollection
     {
         return Payment::where($filter)->lazy();
     }
