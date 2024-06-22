@@ -5,6 +5,7 @@ namespace App\Domain\Models;
 use App\Domain\Enum\User\Document;
 use App\Domain\Enum\User\Type;
 use Carbon\Carbon;
+use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -25,6 +26,11 @@ class User extends Authenticatable
         UserCommon::class,
         UserShopKeeper::class,
     ];
+
+    protected static function newFactory()
+    {
+        return UserFactory::new();
+    }
 
     /**
      * @var array

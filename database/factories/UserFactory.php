@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Domain\Enum\User\Document;
+use App\Domain\Enum\User\Type;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -25,20 +27,12 @@ class UserFactory extends Factory
     {
         return [
             'name' => fake()->name(),
+            'type' => Type::common,
             'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
+            'document_type' => Document::cpf,
+            'document' => '456.987.321-74',
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
         ];
-    }
-
-    /**
-     * Indicate that the model's email address should be unverified.
-     */
-    public function unverified(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
-        ]);
     }
 }

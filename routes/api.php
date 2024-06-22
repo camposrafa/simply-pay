@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoggedController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Payment\CreateController as CreatePaymentController;
 use App\Http\Controllers\Payment\ListController as ListPaymentController;
+use App\Http\Controllers\User\CreateController;
 use App\Http\Controllers\User\Wallet\DepositController;
 use App\Http\Controllers\User\Wallet\ShowController;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('auth', [LoginController::class, 'login']);
+Route::post('user', [CreateController::class, 'store']);
 
 Route::middleware('auth:api')->group(function () {
 
