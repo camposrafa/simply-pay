@@ -29,7 +29,7 @@ class Notifier implements ShouldQueue
      *
      * @var int
      */
-    public $retryAfter = 5;
+    public $backoff = 5;
 
     function __construct(
         private User $user

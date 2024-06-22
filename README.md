@@ -2,6 +2,13 @@
 
 Plataforma de usuários comuns e lojistas que podem efetuar pagamentos e depósitos Laravel ([Leia Mais](https://laravel.com/))
 
+## Técnicas e recursos e utilizados
+ - Laravel 10
+ - Docker
+ - Design Patterns;
+ - SOLID;
+ - Testes unitários e de feature;
+
 ## Requisitos de uso
 
 - Clone o repositório
@@ -75,5 +82,8 @@ Realize pagamentos através dessa rota
 
 A transação consulta um processo de autorização e posteriormente o envio de uma notificação por email. Esse processo é consultado em segundo plano.
 Para que os processos sejam executados, é necessário executar os seguintes comandos em seu terminal:
-´´docker container exec -ti simply-pay-php php artisan queue:work´´
-´´docker container exec -ti simply-pay-php php artisan queue:listen´´
+´´make queue-work´´
+´´make queue-listen´´
+
+*Detalhe importante:* para que o projeto funcione de maneira mais leve em seu ambiente local, recomendamos que siga os passos anteriores, mas em ambientes de stage ou produção,
+é necessário a configuração de um supervisor ([Leia mais aqui](https://laravel.com/docs/10.x/queues#supervisor-configuration))
