@@ -14,23 +14,23 @@ Plataforma de usuários comuns e lojistas que podem efetuar pagamentos e depósi
 **Criar usuário**
  - Rota: /user
  - Método POST
- - Payload {
+ - Payload ``{
     "name": "Rafa",
     "type": "common"
     "document_type": "cpf"
     "document": "132.465.852-72",
     "email": "rafa@email.com",
     "password": "123456789",
-}
+}``
 
 **Auth**
  Essa rota é utilizada para realizar login na plataforma
  - Rota: /auth
  - Método POST
- - Payload {
+ - Payload ``{
     "email": "Rafa",
     "password": "123456789",
-}
+}``
 
 **Logged**
  Essa rota é utilizada para verificar informações do usuário logado
@@ -46,18 +46,18 @@ Plataforma de usuários comuns e lojistas que podem efetuar pagamentos e depósi
 Realize pagamentos através dessa rota
  - Rota: /payment
  - Método POST
- - Payload {
+ - Payload ``{
     "payee_id": 2,
     "amount": 100
-}
+}``
 
  Veja o histórico de pagamentos através dessa rota
  - Rota: /payment
  - Método GET
- - Payload {
+ - Payload ``{
     "user_id": 2,
     "amount": 100
-}
+}``
 
 **Wallet**
  Veja informações da carteira através dessa rota
