@@ -32,7 +32,7 @@ class Handler
             throw new Exception(trans("Payee not found"));
         }
 
-        if ($command->getAmount() > $command->getPayer()->getBalance()) {
+        if ($command->getAmount() > $command->getPayer()->getWallet()->getBalance()) {
             throw new Exception("insufficient funds");
         }
 

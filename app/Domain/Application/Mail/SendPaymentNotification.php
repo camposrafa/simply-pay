@@ -41,7 +41,7 @@ class SendPaymentNotification extends Mailable
             view: 'emails.user.payment',
             with: [
                 'name' => $this->user->getName(),
-                'balance' => $this->user->getBalance()
+                'balance' => $this->user->getWallet()->getBalance()
             ]
         );
     }

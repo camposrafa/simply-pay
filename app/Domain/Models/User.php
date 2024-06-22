@@ -5,6 +5,7 @@ namespace App\Domain\Models;
 use App\Domain\Enum\User\Document;
 use App\Domain\Enum\User\Type;
 use Carbon\Carbon;
+use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,6 +27,11 @@ class User extends Authenticatable
         UserShopKeeper::class,
     ];
 
+    protected static function newFactory()
+    {
+        return UserFactory::new();
+    }
+
     /**
      * @var array
      */
@@ -36,7 +42,6 @@ class User extends Authenticatable
         'document_type',
         'email',
         'password',
-        'balance'
     ];
 
     /**
@@ -51,7 +56,6 @@ class User extends Authenticatable
         'document_type',
         'email',
         'password',
-        'balance'
     ];
 
     /**
@@ -72,7 +76,6 @@ class User extends Authenticatable
         'password' => 'hashed',
         'document_type' => Document::class,
         'type' => Type::class,
-        'balance' => 'float'
     ];
 
     public function getId(): int
@@ -206,26 +209,6 @@ class User extends Authenticatable
         return $this;
     }
 
-    /**
-     * Get the value of balance
-     */
-    public function getBalance(): float
-    {
-        return $this->balance;
-    }
-
-    /**
-     * Set the value of balance
-     *
-     * @return  self
-     */
-    public function setBalance($balance): self
-    {
-        $this->balance = $balance;
-
-        return $this;
-    }
-
     public function getCreatedAt(): ?Carbon
     {
         return $this->created_at;
@@ -258,8 +241,32 @@ class User extends Authenticatable
         return $this;
     }
 
+    /**
+     *
+     * @return Wallet
+     */
+    public function getWallet(): Wallet
+    {
+        return $this->wallet;
+    }
+
+    /**
+     * @param Wallet $wallet
+     * @return self
+     */
+    public function setWallet(Wallet $wallet): self
+    {
+        $this->wallet = $wallet;
+        return $this;
+    }
+
     public function payment()
     {
         return $this->hasMany(Payment::class);
+    }
+
+    public function wallet()
+    {
+        return $this->hasOne(Wallet::class, 'user_id');
     }
 }

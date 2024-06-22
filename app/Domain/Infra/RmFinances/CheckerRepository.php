@@ -2,10 +2,11 @@
 
 namespace App\Domain\Infra\RmFinances;
 
+use App\Domain\Contracts\CheckerRepository as ContractsCheckerRepository;
 use Exception;
-use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Client;
 
-class CheckerRepository extends GuzzleClient
+class CheckerRepository extends Client implements ContractsCheckerRepository
 {
     /** @inheritDoc */
     public function authorize(): bool

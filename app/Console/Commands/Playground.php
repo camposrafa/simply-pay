@@ -7,6 +7,8 @@ use App\Domain\Application\Auth\Logout\Handler;
 use App\Domain\Application\Jobs\User\Notifier;
 use App\Domain\Application\Payment\Create\Command as CreateCommand;
 use App\Domain\Application\Payment\Create\Handler as CreateHandler;
+use App\Domain\Application\User\Wallet\Deposit\Command as DepositCommand;
+use App\Domain\Application\User\Wallet\Deposit\Handler as DepositHandler;
 use App\Domain\Infra\RmFinances\CheckerRepository;
 use App\Domain\Models\User;
 use Illuminate\Console\Command;
@@ -33,6 +35,6 @@ class Playground extends Command
      */
     public function handle()
     {
-        Notifier::dispatch(User::find(1));
+        App::make(DepositHandler::class)->handle(new DepositCommand(1, 50));
     }
 }

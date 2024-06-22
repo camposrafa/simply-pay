@@ -44,6 +44,22 @@ cache:
 	docker container exec -ti simply-pay-php php artisan package:discover && \
 	docker container exec -ti simply-pay-php php artisan auth:clear-resets
 
+queue-listen:
+	@echo "Starting listener"
+	@docker container exec -ti simply-pay-php php artisan queue:listen
+
+queue-work:
+	@echo "Starting worker"
+	@docker container exec -ti simply-pay-php php artisan queue:work
+
+php-stan:
+	@echo "analyzing the code"
+	@docker container exec -ti simply-pay-php vendor/bin/phpstan analyse app tests
+
+test:
+	@echo "Running Tests..."
+	@docker container exec -ti simply-pay-php php artisan test
+
 migrate:
 	@echo "Migrating database..."
 	@docker container exec -ti -ti simply-pay-php php artisan migrate

@@ -4,7 +4,7 @@ namespace App\Domain\Application\Jobs;
 
 use App\Domain\Enum\Payment\Status;
 use App\Domain\Infra\Eloquent\PaymentRepository;
-use App\Domain\Infra\Eloquent\UserRepository;
+use App\Domain\Infra\Eloquent\WalletRepository;
 use App\Domain\Infra\RmFinances\CheckerRepository;
 use App\Domain\Models\Payment;
 use App\Domain\Models\User;
@@ -23,7 +23,7 @@ class Checker implements ShouldQueue
      * Create a new job instance.
      */
     function __construct(
-        private User $payer,
+        private ?User $payer,
         private User $payee,
         private Payment $payment
     ) {
@@ -34,22 +34,27 @@ class Checker implements ShouldQueue
      */
     public function handle(): Payment
     {
-        $userRepository = App::make(UserRepository::class);
+        $walletRepository = App::make(WalletRepository::class);
         $paymentRepository = App::make(PaymentRepository::class);
         $checkerRepository = App::make(CheckerRepository::class);
 
-        if ($checkerRepository->authorize()) {
-            $userRepository->save($this->payer->setBalance($this->payer->getBalance() - $this->payment->getAmount()));
-            $userRepository->save($this->payee->setBalance($this->payee->getBalance() + $this->payment->getAmount()));
-            $payment = $paymentRepository->save(
-                $this->payment
-                    ->setDeliveredAt(Carbon::now())
-                    ->setStatus(Status::success)
-            );
-        } else {
-            $payment = $paymentRepository->save($this->payment->setStatus(Status::fail));
+        if (!$checkerRepository->authorize()) {
+            return $paymentRepository->save($this->payment->setStatus(Status::fail));
         }
 
-        return $payment;
+        if (!is_null($this->payer)) {
+            $payerWallet = $this->payer->getWallet();
+            $walletRepository->save($payerWallet->setBalance($payerWallet->getBalance() - $this->payment->getAmount()));
+        }
+
+        $payeeWallet = $this->payee->getWallet();
+
+        $walletRepository->save($payeeWallet->setBalance($payeeWallet->getBalance() + $this->payment->getAmount()));
+
+        return $paymentRepository->save(
+            $this->payment
+                ->setDeliveredAt(Carbon::now())
+                ->setStatus(Status::success)
+        );
     }
 }
