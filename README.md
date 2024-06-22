@@ -87,3 +87,11 @@ Para que os processos sejam executados, é necessário executar os seguintes com
 
 *Detalhe importante:* para que o projeto funcione de maneira mais leve em seu ambiente local, recomendamos que siga os passos anteriores, mas em ambientes de stage ou produção,
 é necessário a configuração de um supervisor ([Leia mais aqui](https://laravel.com/docs/10.x/queues#supervisor-configuration))
+
+## Monitoramento de qualidade
+
+**PHP-STAN**
+ - Para analizar o código, basta digitar o comando ``make php-stan`` em seu terminal
+
+**Testes**
+ - As funcionalidades desse repositório contam com testes unitários e de feature. Para executá-los, basta digitar o comando ``make tests`` em seu terminal

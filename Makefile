@@ -56,6 +56,10 @@ php-stan:
 	@echo "analyzing the code"
 	@docker container exec -ti simply-pay-php vendor/bin/phpstan analyse app tests
 
+test:
+	@echo "Running Tests..."
+	@docker container exec -ti simply-pay-php php artisan test
+
 migrate:
 	@echo "Migrating database..."
 	@docker container exec -ti -ti simply-pay-php php artisan migrate
