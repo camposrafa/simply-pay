@@ -52,6 +52,10 @@ queue-work:
 	@echo "Starting worker"
 	@docker container exec -ti simply-pay-php php artisan queue:work
 
+php-stan:
+	@echo "analyzing the code"
+	@docker container exec -ti simply-pay-php vendor/bin/phpstan analyse app tests
+
 migrate:
 	@echo "Migrating database..."
 	@docker container exec -ti -ti simply-pay-php php artisan migrate
