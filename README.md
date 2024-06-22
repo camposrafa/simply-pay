@@ -17,6 +17,8 @@ Plataforma de usuários comuns e lojistas que podem efetuar pagamentos e depósi
     - Esse comando instalará todas as imagens necessárias para que o projeto esteja pronto para utilização, bem como efetuará as migrations, seeders e criação dos clients do passport para o controle de acesso.
 
 ## Endpoints
+Dispoível também para utilização via [POSTMAN](https://www.postman.com/warped-eclipse-904999/workspace/sp/collection/13893383-c6e50ccc-6ff7-409c-bbe2-2d1e02eed392?action=share&creator=13893383
+)
 
 **Criar usuário**
  - Rota: /user
