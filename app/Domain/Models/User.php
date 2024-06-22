@@ -36,7 +36,6 @@ class User extends Authenticatable
         'document_type',
         'email',
         'password',
-        'balance'
     ];
 
     /**
@@ -51,7 +50,6 @@ class User extends Authenticatable
         'document_type',
         'email',
         'password',
-        'balance'
     ];
 
     /**
@@ -72,7 +70,6 @@ class User extends Authenticatable
         'password' => 'hashed',
         'document_type' => Document::class,
         'type' => Type::class,
-        'balance' => 'float'
     ];
 
     public function getId(): int
@@ -204,14 +201,6 @@ class User extends Authenticatable
         $this->password = $password;
 
         return $this;
-    }
-
-    /**
-     * Get the value of balance
-     */
-    public function getBalance(): float
-    {
-        return $this->balance;
     }
 
     public function getCreatedAt(): ?Carbon
