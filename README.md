@@ -1,66 +1,79 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Simply Pay
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Plataforma de usuários comuns e lojistas que podem efetuar pagamentos e depósitos Laravel ([Leia Mais](https://laravel.com/))
 
-## About Laravel
+## Requisitos de uso
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Clone o repositório
+- Certifique-se de ter o docker instalado em sua máquina
+- Execute o comando **make dev**
+    - Esse comando instalará todas as imagens necessárias para que o projeto esteja pronto para utilização, bem como efetuará as migrations, seeders e criação dos clients do passport para o controle de acesso.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Endpoints
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+**Criar usuário**
+ - Rota: /user
+ - Método POST
+ - Payload {
+    "name": "Rafa",
+    "type": "common"
+    "document_type": "cpf"
+    "document": "132.465.852-72",
+    "email": "rafa@email.com",
+    "password": "123456789",
+}
 
-## Learning Laravel
+**Auth**
+ Essa rota é utilizada para realizar login na plataforma
+ - Rota: /auth
+ - Método POST
+ - Payload {
+    "email": "Rafa",
+    "password": "123456789",
+}
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+**Logged**
+ Essa rota é utilizada para verificar informações do usuário logado
+ - Rota: /logged
+ - Método GET
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+**Logout**
+ Essa rota é utilizada para deslogar
+ - Rota: /logout
+ - Método DELETE
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+ **Payment**
+Realize pagamentos através dessa rota
+ - Rota: /payment
+ - Método POST
+ - Payload {
+    "payee_id": 2,
+    "amount": 100
+}
 
-## Laravel Sponsors
+ Veja o histórico de pagamentos através dessa rota
+ - Rota: /payment
+ - Método GET
+ - Payload {
+    "user_id": 2,
+    "amount": 100
+}
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+**Wallet**
+ Veja informações da carteira através dessa rota
+ - Rota: user/{id}/wallet
+ - Método GET
 
-### Premium Partners
+ Efetue um depósito através dessa rota ()
+ - Rota: user/{id}/wallet
+ - Método POST
+ - Payload {
+    "balance": 100
+}
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+## Processamento Assincrono
 
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+A transação consulta um processo de autorização e posteriormente o envio de uma notificação por email. Esse processo é consultado em segundo plano.
+Para que os processos sejam executados, é necessário executar os seguintes comandos em seu terminal:
+´´docker container exec -ti simply-pay-php php artisan queue:work´´
+´´docker container exec -ti simply-pay-php php artisan queue:listen´´
