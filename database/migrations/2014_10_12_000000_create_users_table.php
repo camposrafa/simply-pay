@@ -18,7 +18,6 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->enum('document_type', ['cpf', 'cnpj']);
             $table->string('document', 18)->unique();
-            $table->decimal('balance')->default(0);
             $table->string('password');
             $table->timestamps();
             $table->softDeletes();

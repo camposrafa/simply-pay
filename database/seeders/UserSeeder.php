@@ -26,16 +26,14 @@ class UserSeeder extends Seeder
                 'email' => 'user_common@email.com.br',
                 'document' => '547.974.880-77',
                 'document_type' => Document::cpf,
-                'password' => Hash::make('12345678'),
-                'balance' => 99.99
+                'password' => Hash::make('12345678')
             ]),
             new UserShopKeeper([
                 'name' => 'Usuário Lojista',
                 'email' => 'user_shopkeeper@email.com.br',
                 'document' => '32.637.346/0001-91',
                 'document_type' => Document::cnpj,
-                'password' => Hash::make('12345678'),
-                'balance' => 57.65
+                'password' => Hash::make('12345678')
             ]),
         ];
 

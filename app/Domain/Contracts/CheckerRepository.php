@@ -2,18 +2,15 @@
 
 namespace App\Domain\Contracts;
 
-use App\Domain\Models\Payment;
-
 interface CheckerRepository
 {
     /**
-     * @return array
+     * @return void
      */
-    public function authorize(): int;
+    public function authorize();
 
     /**
-     * @param array $filter
-     * @return Payment|null
+     * @return void
      */
-    public function notifier(): int;
+    public function notifier();
 }

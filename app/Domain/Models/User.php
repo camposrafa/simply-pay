@@ -214,18 +214,6 @@ class User extends Authenticatable
         return $this->balance;
     }
 
-    /**
-     * Set the value of balance
-     *
-     * @return  self
-     */
-    public function setBalance($balance): self
-    {
-        $this->balance = $balance;
-
-        return $this;
-    }
-
     public function getCreatedAt(): ?Carbon
     {
         return $this->created_at;
@@ -258,8 +246,32 @@ class User extends Authenticatable
         return $this;
     }
 
+    /**
+     *
+     * @return Wallet
+     */
+    public function getWallet(): Wallet
+    {
+        return $this->wallet;
+    }
+
+    /**
+     * @param Wallet $wallet
+     * @return self
+     */
+    public function setWallet(Wallet $wallet): self
+    {
+        $this->wallet = $wallet;
+        return $this;
+    }
+
     public function payment()
     {
         return $this->hasMany(Payment::class);
+    }
+
+    public function wallet()
+    {
+        return $this->hasOne(Wallet::class, 'user_id');
     }
 }

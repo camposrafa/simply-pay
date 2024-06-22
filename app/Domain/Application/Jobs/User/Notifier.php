@@ -11,6 +11,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\App;
+use Psr\Http\Message\ResponseInterface;
 
 class Notifier implements ShouldQueue
 {
@@ -39,7 +40,7 @@ class Notifier implements ShouldQueue
     {
         $checkerRepository = App::make(CheckerRepository::class);
 
-        if ($checkerRepository->notifier()) {
+        if ($checkerRepository->notifier() instanceof ResponseInterface) {
             $this->user->notify(new StatusPayment($this->user));
         }
     }
