@@ -11,7 +11,7 @@ trait InteractWithUsers
     {
         $this->logout();
 
-        $this->user = User::find(1);
+        $this->user = User::factory(1);
 
         $this->login();
 
