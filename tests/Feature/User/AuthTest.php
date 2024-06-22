@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\User;
 
+use App\Domain\Models\User;
 use Tests\CreatesApplication;
 use Tests\InteractWithUsers;
 use Tests\TestCase;
@@ -9,6 +10,11 @@ use Tests\TestCase;
 class AuthTest extends TestCase
 {
     use CreatesApplication, InteractWithUsers;
+
+    /**
+     * @var User
+     */
+    protected User $user;
 
     public function testUserCanLoginWhitCorrectInfo(): void
     {

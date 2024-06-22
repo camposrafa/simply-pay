@@ -4,6 +4,7 @@ namespace Tests\Feature\User;
 
 use App\Domain\Enum\User\Document;
 use App\Domain\Enum\User\Type;
+use App\Domain\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\CreatesApplication;
 use Tests\InteractWithUsers;
@@ -12,6 +13,11 @@ use Tests\TestCase;
 class CreateTest extends TestCase
 {
     use CreatesApplication, InteractWithUsers, WithFaker;
+
+    /**
+     * @var User
+     */
+    protected User $user;
 
     public function createUser(): void
     {

@@ -15,7 +15,7 @@ class NotifyTest extends TestCase
     /**
      * @var User
      */
-    private User $user;
+    protected User $user;
 
     public function testMailNotification()
     {

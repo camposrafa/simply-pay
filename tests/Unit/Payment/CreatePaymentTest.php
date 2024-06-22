@@ -14,6 +14,11 @@ class CreatePaymentTest extends TestCase
 {
     use CreatesApplication, InteractWithUsers;
 
+    /**
+     * @var User
+     */
+    protected User $user;
+
     public function testIfPaymentHasBeenProcessed(): void
     {
         $handler = App::make(Handler::class);

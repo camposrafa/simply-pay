@@ -4,6 +4,7 @@ namespace Tests\Unit\User\Wallet;
 
 use App\Domain\Application\User\Wallet\Deposit\Command as DepositCommand;
 use App\Domain\Application\User\Wallet\Deposit\Handler as DepositHandler;
+use App\Domain\Models\User;
 use Illuminate\Support\Facades\App;
 use Tests\CreatesApplication;
 use Tests\InteractWithUsers;
@@ -12,6 +13,10 @@ use Tests\TestCase;
 class DepositWalletTest extends TestCase
 {
     use CreatesApplication, InteractWithUsers;
+    /**
+     * @var User
+     */
+    protected User $user;
 
     public function testIfDepositIsDone(): void
     {
