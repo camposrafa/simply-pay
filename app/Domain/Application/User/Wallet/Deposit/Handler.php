@@ -2,6 +2,7 @@
 
 namespace App\Domain\Application\User\Wallet\Deposit;
 
+use App\Domain\Application\Exceptions\ModelNotFoundException;
 use App\Domain\Application\Jobs\Checker;
 use Illuminate\Support\Str;
 use App\Domain\Application\User\Wallet\Deposit\Command;
@@ -9,8 +10,6 @@ use App\Domain\Contracts\PaymentRepository;
 use App\Domain\Contracts\UserRepository;
 use App\Domain\Contracts\WalletRepository;
 use App\Domain\Models\Payment;
-use App\Domain\Models\Wallet;
-use Exception;
 use Illuminate\Support\Facades\DB;
 
 class Handler
@@ -34,7 +33,7 @@ class Handler
         ]);
 
         if (is_null($user)) {
-            throw new Exception("user not found");
+            throw new ModelNotFoundException("user not found");
         }
 
         DB::beginTransaction();

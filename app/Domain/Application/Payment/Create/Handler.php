@@ -2,13 +2,14 @@
 
 namespace App\Domain\Application\Payment\Create;
 
+use App\Domain\Application\Exceptions\ModelNotFoundException;
+use App\Domain\Application\Exceptions\NotAcceptableException;
 use App\Domain\Application\Jobs\Checker;
 use App\Domain\Contracts\UserRepository;
 use Illuminate\Support\Str;
 use App\Domain\Application\Payment\Create\Command;
 use App\Domain\Contracts\PaymentRepository;
 use App\Domain\Models\Payment;
-use Exception;
 use Illuminate\Support\Facades\DB;
 
 class Handler
@@ -29,11 +30,11 @@ class Handler
         ]);
 
         if (is_null($payee)) {
-            throw new Exception(trans("Payee not found"));
+            throw new ModelNotFoundException(trans("Payee not found"));
         }
 
         if ($command->getAmount() > $command->getPayer()->getWallet()->getBalance()) {
-            throw new Exception("insufficient funds");
+            throw new NotAcceptableException("insufficient funds");
         }
 
         DB::beginTransaction();

@@ -6,7 +6,6 @@ use App\Domain\Application\Exceptions\ResourceAlreadyExists;
 use App\Domain\Contracts\UserRepository;
 use App\Domain\Application\User\Create\Command;
 use App\Domain\Models\User;
-use Exception;
 
 class Handler
 {
@@ -24,7 +23,7 @@ class Handler
         $email = $this->userRepository->getByEmail($command->getEmail());
 
         if (!is_null($email)) {
-            throw new Exception('email already used');
+            throw new ResourceAlreadyExists('email already used');
         }
 
         return $this->userRepository->save(

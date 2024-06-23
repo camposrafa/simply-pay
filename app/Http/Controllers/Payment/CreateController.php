@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Payment;
 
+use App\Domain\Application\Exceptions\UnauthorizedException;
 use App\Domain\Application\Payment\Create\Command;
 use App\Domain\Application\Payment\Create\Handler;
 use App\Domain\Models\UserShopKeeper;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Payment\Payment;
-use Exception;
 use Illuminate\Http\Request;
 
 class CreateController extends Controller
@@ -19,7 +19,7 @@ class CreateController extends Controller
     public function store(Request $request)
     {
         if ($request->user() instanceof UserShopKeeper) {
-            throw new Exception('you cannot make payments');
+            throw new UnauthorizedException('you can not make payments');
         }
 
         $paymentCommand = new Command(

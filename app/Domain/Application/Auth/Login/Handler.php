@@ -3,7 +3,7 @@
 namespace App\Domain\Application\Auth\Login;
 
 use App\Domain\Application\Auth\Login\Command;
-use Exception;
+use App\Domain\Application\Exceptions\ModelNotFoundException;
 use App\Domain\Contracts\UserRepository;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\PersonalAccessTokenResult as AccessToken;
@@ -21,10 +21,8 @@ class Handler
     }
 
     /**
-     *
      * @param Command $command
-     * @throws Exception
-     * @return bool
+     * @return AccessToken
      */
     public function handle(Command $command): AccessToken
     {
@@ -34,7 +32,7 @@ class Handler
         if (
             !$user || empty($command->getPassword()) || !Hash::check($command->getPassword(), $user->getPassword())
         ) {
-            throw new Exception("user not found!", 404);
+            throw new ModelNotFoundException("user not found!");
         }
 
         return $user->createToken("Password Generated Token");
