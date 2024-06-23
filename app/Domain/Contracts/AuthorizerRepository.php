@@ -9,7 +9,7 @@ interface AuthorizerRepository
     /**
      * @return void
      */
-    public function authorize(): Status;
+    public function authorize();
 
     /**
      * @return void

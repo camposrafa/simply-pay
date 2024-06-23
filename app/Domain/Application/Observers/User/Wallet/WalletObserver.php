@@ -15,7 +15,7 @@ class WalletObserver
     public function updated(Wallet $wallet)
     {
         if ($wallet->isDirty('balance')) {
-            Notifier::dispatch($wallet->getUser());
+            Notifier::dispatch($wallet->getUser(), "The payment was completed. Your new balance is: R$" . $wallet->getBalance());
         }
     }
 }

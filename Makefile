@@ -50,7 +50,7 @@ queue-listen:
 
 queue-work:
 	@echo "Starting worker"
-	@docker container exec -ti simply-pay-php php artisan queue:work redis --tries=10
+	@docker container exec -ti simply-pay-php php artisan queue:work
 
 php-stan:
 	@echo "analyzing the code"

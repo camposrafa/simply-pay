@@ -17,7 +17,8 @@ class SendPaymentNotification extends Mailable
      * Create a new message instance.
      */
     public function __construct(
-        private User $user
+        private User $user,
+        private string $bodyMessage
     ) {
     }
 
@@ -41,7 +42,7 @@ class SendPaymentNotification extends Mailable
             view: 'emails.user.payment',
             with: [
                 'name' => $this->user->getName(),
-                'balance' => $this->user->getWallet()->getBalance()
+                'bodyMessage' => $this->bodyMessage
             ]
         );
     }

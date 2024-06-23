@@ -35,6 +35,7 @@ class Playground extends Command
      */
     public function handle()
     {
-        App::make(DepositHandler::class)->handle(new DepositCommand(1, 50));
+        App::make(CreateHandler::class)->handle(new CreateCommand(User::find(1), 2, 50));
+        return true;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Domain\Application\Jobs;
 
+use App\Domain\Application\Jobs\User\Notifier;
 use App\Domain\Enum\Payment\Status;
 use App\Domain\Infra\Eloquent\PaymentRepository;
 use App\Domain\Infra\Eloquent\WalletRepository;
@@ -14,10 +15,14 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Throwable;
 
 class Checker implements ShouldQueue
 {
+    private PaymentRepository $paymentRepository;
+
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
     /**
      * Create a new job instance.
      */
@@ -26,18 +31,16 @@ class Checker implements ShouldQueue
         private User $payee,
         private Payment $payment
     ) {
+        $this->paymentRepository = new PaymentRepository();
     }
 
     /**
      * Execute the job.
      */
-    public function handle(WalletRepository $walletRepository, PaymentRepository $paymentRepository, AuthorizerRepository $authorizerRepository): Payment
+    public function handle(WalletRepository $walletRepository, AuthorizerRepository $authorizerRepository): Payment
     {
-        if ($authorizerRepository->authorize() === Status::fail) {
-            return $paymentRepository->save(
-                $this->payment->setStatus(Status::fail)
-            );
-        }
+
+        $authorizerRepository->authorize();
 
         if (!is_null($this->payer)) {
             $payerWallet = $this->payer->getWallet();
@@ -48,10 +51,22 @@ class Checker implements ShouldQueue
 
         $walletRepository->save($payeeWallet->setBalance($payeeWallet->getBalance() + $this->payment->getAmount()));
 
-        return $paymentRepository->save(
+        return $this->paymentRepository->save(
             $this->payment
                 ->setDeliveredAt(Carbon::now())
                 ->setStatus(Status::success)
         );
+    }
+
+    /**
+     * Handle a job failure.
+     */
+    public function failed(?Throwable $exception)
+    {
+        $payment = $this->paymentRepository->save(
+            $this->payment->setStatus(Status::fail)
+        );
+
+        Notifier::dispatch($payment->getPayer(), "The payment wasn't be completed. Try again later");
     }
 }

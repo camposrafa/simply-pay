@@ -21,7 +21,7 @@ class NotifyTest extends TestCase
     {
         $this->user = User::find(1);
         Notification::fake();
-        $this->user->notify($this->user->notify(new StatusPayment($this->user)));
+        $this->user->notify($this->user->notify(new StatusPayment($this->user, "some test message")));
         Notification::assertSentTo($this->user, StatusPayment::class, function ($notification, $channels) {
             $this->assertContains('mail', $channels);
 
