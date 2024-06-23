@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Application\Observers\Wallet;
+namespace App\Domain\Application\Observers\User\Wallet;
 
 use App\Domain\Application\Jobs\User\Notifier;
 use App\Domain\Models\Wallet;

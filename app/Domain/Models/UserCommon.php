@@ -3,10 +3,13 @@
 namespace App\Domain\Models;
 
 use App\Domain\Enum\User\Type;
-use Database\Factories\UserFactory;
+use Database\Factories\UserCommonFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class UserCommon extends User
 {
+    use HasFactory;
+
     protected static $singleTableType = "common";
 
     /**
@@ -18,6 +21,6 @@ class UserCommon extends User
 
     protected static function newFactory()
     {
-        return UserFactory::new();
+        return UserCommonFactory::new();
     }
 }
