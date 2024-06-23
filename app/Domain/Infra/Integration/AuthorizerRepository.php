@@ -1,21 +1,23 @@
 <?php
 
-namespace App\Domain\Infra\RmFinances;
+namespace App\Domain\Infra\Integration;
 
-use App\Domain\Contracts\CheckerRepository as ContractsCheckerRepository;
+use App\Domain\Contracts\AuthorizerRepository as ContractsAuthorizerRepository;
+use App\Domain\Enum\Payment\Status;
 use Exception;
 use GuzzleHttp\Client;
 
-class CheckerRepository extends Client implements ContractsCheckerRepository
+class AuthorizerRepository extends Client implements ContractsAuthorizerRepository
 {
+
     /** @inheritDoc */
-    public function authorize(): bool
+    public function authorize(): Status
     {
         try {
             $this->request('GET', 'https://util.devi.tools/api/v2/authorize', []);
-            return true;
+            return Status::success;
         } catch (Exception $ex) {
-            return false;
+            return Status::fail;
         }
     }
 

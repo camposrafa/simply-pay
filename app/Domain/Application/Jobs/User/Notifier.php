@@ -3,7 +3,7 @@
 namespace App\Domain\Application\Jobs\User;
 
 use App\Domain\Application\Notifications\StatusPayment;
-use App\Domain\Infra\RmFinances\CheckerRepository;
+use App\Domain\Infra\Integration\AuthorizerRepository;
 use App\Domain\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -24,13 +24,6 @@ class Notifier implements ShouldQueue
      */
     public $tries = 10;
 
-    /**
-     * The number of seconds to wait before retrying the job.
-     *
-     * @var int
-     */
-    public $backoff = 5;
-
     function __construct(
         private User $user
     ) {
@@ -38,9 +31,9 @@ class Notifier implements ShouldQueue
 
     public function handle()
     {
-        $checkerRepository = App::make(CheckerRepository::class);
+        $authorizerRepository = App::make(AuthorizerRepository::class);
 
-        if ($checkerRepository->notifier() instanceof ResponseInterface) {
+        if ($authorizerRepository->notifier() instanceof ResponseInterface) {
             $this->user->notify(new StatusPayment($this->user));
         }
     }

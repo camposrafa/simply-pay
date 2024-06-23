@@ -5,7 +5,7 @@ namespace App\Domain\Application\Jobs;
 use App\Domain\Enum\Payment\Status;
 use App\Domain\Infra\Eloquent\PaymentRepository;
 use App\Domain\Infra\Eloquent\WalletRepository;
-use App\Domain\Infra\RmFinances\CheckerRepository;
+use App\Domain\Infra\Integration\AuthorizerRepository;
 use App\Domain\Models\Payment;
 use App\Domain\Models\User;
 use Carbon\Carbon;
@@ -14,7 +14,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\App;
 
 class Checker implements ShouldQueue
 {
@@ -32,14 +31,12 @@ class Checker implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(): Payment
+    public function handle(WalletRepository $walletRepository, PaymentRepository $paymentRepository, AuthorizerRepository $authorizerRepository): Payment
     {
-        $walletRepository = App::make(WalletRepository::class);
-        $paymentRepository = App::make(PaymentRepository::class);
-        $checkerRepository = App::make(CheckerRepository::class);
-
-        if (!$checkerRepository->authorize()) {
-            return $paymentRepository->save($this->payment->setStatus(Status::fail));
+        if ($authorizerRepository->authorize() === Status::fail) {
+            return $paymentRepository->save(
+                $this->payment->setStatus(Status::fail)
+            );
         }
 
         if (!is_null($this->payer)) {
