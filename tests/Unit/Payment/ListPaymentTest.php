@@ -2,33 +2,27 @@
 
 namespace Tests\Unit\Payment;
 
-use App\Domain\Application\Payment\List\Command as ListCommand;
-use App\Domain\Application\Payment\List\Handler as ListHandler;
-use App\Domain\Models\User;
+use App\Domain\Application\Payment\List\Command;
+use App\Domain\Application\Payment\List\Handler;
+use App\Domain\Enum\Payment\Status;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\LazyCollection;
-use Tests\CreatesApplication;
-use Tests\InteractWithUsers;
 use Tests\TestCase;
 
 class ListPaymentTest extends TestCase
 {
-    use CreatesApplication, InteractWithUsers;
-
-    /**
-     * @var User
-     */
-    protected User $user;
-
-    public function testListAllPayments(): void
+    public function testListUserPayment(): void
     {
         $this->setUp();
-        $handler = App::make(ListHandler::class);
+        $handler = App::make(Handler::class);
 
-        $payments = $handler->handle(new ListCommand(
-            ['payee_id' => 1]
+        $payment = $handler->handle(new Command(
+            ['payer_id' => 1]
         ));
 
-        $this->assertEquals(LazyCollection::class, $payments);
+        $this->assertEquals(1, $payment->first()->getPayerId());
+        $this->assertEquals(2, $payment->first()->getPayeeId());
+        $this->assertEquals(10, $payment->first()->getAmount());
+        $this->assertEquals(Status::success, $payment->first()->getStatus());
+        $this->assertEquals(null, $payment->first()->getDeliveredAt());
     }
 }

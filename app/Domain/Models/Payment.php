@@ -4,6 +4,7 @@ namespace App\Domain\Models;
 
 use App\Domain\Enum\Payment\Status;
 use Carbon\Carbon;
+use Database\Factories\PaymentFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,7 +12,10 @@ class Payment extends Model
 {
     use HasFactory;
 
-
+    protected static function newFactory()
+    {
+        return PaymentFactory::new();
+    }
     /**
      * The attributes that are mass assignable.
      *
