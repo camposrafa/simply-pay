@@ -4,10 +4,12 @@ namespace App\Domain\Models;
 
 use App\Domain\Enum\User\Type;
 use App\Domain\Models\User;
-use Database\Factories\UserFactory;
+use Database\Factories\UserShopKeeperFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class UserShopKeeper extends User
 {
+    use HasFactory;
 
     protected static $singleTableType = 'shopkeeper';
 
@@ -20,6 +22,6 @@ class UserShopKeeper extends User
 
     protected static function newFactory()
     {
-        return UserFactory::new();
+        return UserShopKeeperFactory::new();
     }
 }

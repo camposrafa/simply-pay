@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-class UserShopkeeperFactory extends Factory
+class UserShopKeeperFactory extends Factory
 {
 
     protected $model = UserShopKeeper::class;
