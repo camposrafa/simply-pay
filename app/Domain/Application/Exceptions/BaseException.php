@@ -14,10 +14,9 @@ abstract class BaseException extends Exception implements StatusCode
     public abstract function getStatusCode(): int;
 
     /**
-     * @param Request $request
      * @return Response
      */
-    public function render(Request $request): Response
+    public function render(): Response
     {
         return new Response([
             'message' => $this->getMessage()

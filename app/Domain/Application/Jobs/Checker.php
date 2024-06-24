@@ -61,7 +61,7 @@ class Checker implements ShouldQueue
     /**
      * Handle a job failure.
      */
-    public function failed(?Throwable $exception)
+    public function failed()
     {
         $payment = $this->paymentRepository->save(
             $this->payment->setStatus(Status::fail)

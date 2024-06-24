@@ -21,20 +21,17 @@ class StatusPayment extends Notification
     }
 
     /**
-     * Get the notification's delivery channels.
-     *
-     * @return array<int, string>
+     * @return array
      */
-    public function via(object $notifiable): array
+    public function via(): array
     {
         return ['mail'];
     }
 
     /**
-     * @param object $notifiable
      * @return SendPaymentNotification
      */
-    public function toMail(object $notifiable): SendPaymentNotification
+    public function toMail(): SendPaymentNotification
     {
         return new SendPaymentNotification($this->user, $this->bodyMessage);
     }
@@ -44,7 +41,7 @@ class StatusPayment extends Notification
      *
      * @return array<string, mixed>
      */
-    public function toArray(object $notifiable): array
+    public function toArray(): array
     {
         return [
             //
