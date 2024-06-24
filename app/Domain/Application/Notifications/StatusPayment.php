@@ -5,8 +5,6 @@ namespace App\Domain\Application\Notifications;
 use App\Domain\Application\Mail\SendPaymentNotification;
 use App\Domain\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 class StatusPayment extends Notification
@@ -17,27 +15,25 @@ class StatusPayment extends Notification
      * Create a new notification instance.
      */
     public function __construct(
-        private User $user
+        private User $user,
+        private string $bodyMessage
     ) {
     }
 
     /**
-     * Get the notification's delivery channels.
-     *
-     * @return array<int, string>
+     * @return array
      */
-    public function via(object $notifiable): array
+    public function via(): array
     {
         return ['mail'];
     }
 
     /**
-     * @param object $notifiable
      * @return SendPaymentNotification
      */
-    public function toMail(object $notifiable): SendPaymentNotification
+    public function toMail(): SendPaymentNotification
     {
-        return new SendPaymentNotification($notifiable, $this->user);
+        return new SendPaymentNotification($this->user, $this->bodyMessage);
     }
 
     /**
@@ -45,7 +41,7 @@ class StatusPayment extends Notification
      *
      * @return array<string, mixed>
      */
-    public function toArray(object $notifiable): array
+    public function toArray(): array
     {
         return [
             //

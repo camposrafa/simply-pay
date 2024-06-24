@@ -2,13 +2,16 @@
 
 namespace App\Domain\Application\Payment\Create;
 
+use App\Domain\Application\Exceptions\ModelNotFoundException;
+use App\Domain\Application\Exceptions\NotAcceptableException;
+use App\Domain\Application\Exceptions\UnauthorizedException;
 use App\Domain\Application\Jobs\Checker;
 use App\Domain\Contracts\UserRepository;
 use Illuminate\Support\Str;
 use App\Domain\Application\Payment\Create\Command;
 use App\Domain\Contracts\PaymentRepository;
 use App\Domain\Models\Payment;
-use Exception;
+use App\Domain\Models\UserShopKeeper;
 use Illuminate\Support\Facades\DB;
 
 class Handler
@@ -24,16 +27,20 @@ class Handler
 
     public function handle(Command $command)
     {
+        if ($command->getPayer() instanceof UserShopKeeper) {
+            throw new UnauthorizedException('you can not make payments');
+        }
+
         $payee = $this->userRepository->getOne([
             'id' => $command->getPayeeId()
         ]);
 
         if (is_null($payee)) {
-            throw new Exception(trans("Payee not found"));
+            throw new ModelNotFoundException("Payee not found");
         }
 
         if ($command->getAmount() > $command->getPayer()->getWallet()->getBalance()) {
-            throw new Exception("insufficient funds");
+            throw new NotAcceptableException("insufficient funds");
         }
 
         DB::beginTransaction();

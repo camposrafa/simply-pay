@@ -7,12 +7,11 @@ use App\Domain\Enum\User\Type;
 use App\Domain\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\CreatesApplication;
-use Tests\InteractWithUsers;
 use Tests\TestCase;
 
 class CreateTest extends TestCase
 {
-    use CreatesApplication, InteractWithUsers, WithFaker;
+    use CreatesApplication, WithFaker;
 
     /**
      * @var User

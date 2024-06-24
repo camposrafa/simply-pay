@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="format-detection" content="telephone=no">
     <meta name="x-apple-disable-message-reformatting">
-    <title>Ecustos - Código de verificação</title>
+    <title>Simply Pay - Notificação de transferência</title>
     <style type="text/css">
         @media screen {
             @font-face {
@@ -242,7 +242,7 @@
                                                                 <td height="15" style="font-size: 1px; line-height: 1px;">&nbsp;</td>
                                                             </tr>
                                                             <tr>
-                                                                <td class="pc-fb-font" style="font-family: 'Roboto', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 300; line-height: 28px; color: #000000" valign="top"><b>Olá, {{$name}}!</b><br> A transferência foi um sucesso. Seu novo saldo é de R$ {{$balance}}.</td>
+                                                                <td class="pc-fb-font" style="font-family: 'Roboto', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 300; line-height: 28px; color: #000000" valign="top"><b>Hello, {{$name}}!</b><br>{{$bodyMessage}}.</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>

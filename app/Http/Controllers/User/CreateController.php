@@ -27,7 +27,7 @@ class CreateController extends Controller
             'password',
         ]);
 
-        $paymentCommand = new Command(
+        $userCommand = new Command(
             $request->get('name'),
             Type::from($request->get('type')),
             $request->get('document'),
@@ -36,6 +36,6 @@ class CreateController extends Controller
             $request->get('password'),
         );
 
-        return new User($this->handler->handle($paymentCommand));
+        return new User($this->handler->handle($userCommand));
     }
 }

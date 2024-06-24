@@ -4,12 +4,15 @@ namespace Database\Factories;
 
 use App\Domain\Enum\User\Document;
 use App\Domain\Enum\User\Type;
+use App\Domain\Models\UserShopKeeper;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-class UserFactory extends Factory
+class UserShopKeeperFactory extends Factory
 {
+
+    protected $model = UserShopKeeper::class;
     /**
      * The current password being used by the factory.
      */
@@ -24,10 +27,10 @@ class UserFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'type' => Type::common,
+            'type' => Type::shopkeeper,
             'email' => fake()->unique()->safeEmail(),
-            'document_type' => Document::cpf,
-            'document' => '456.987.321-74',
+            'document_type' => Document::cnpj,
+            'document' => fake()->word(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
         ];

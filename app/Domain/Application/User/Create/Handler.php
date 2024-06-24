@@ -5,8 +5,6 @@ namespace App\Domain\Application\User\Create;
 use App\Domain\Application\Exceptions\ResourceAlreadyExists;
 use App\Domain\Contracts\UserRepository;
 use App\Domain\Application\User\Create\Command;
-use App\Domain\Models\User;
-use Exception;
 
 class Handler
 {
@@ -24,11 +22,19 @@ class Handler
         $email = $this->userRepository->getByEmail($command->getEmail());
 
         if (!is_null($email)) {
-            throw new Exception('email already used');
+            throw new ResourceAlreadyExists('email already used');
         }
 
+        $document = $this->userRepository->getOne(['document' => $command->getDocument()]);
+
+        if (!is_null($document)) {
+            throw new ResourceAlreadyExists('document number already used');
+        }
+
+        $user = (Factory::create($command->getType()))->createUser();
+
         return $this->userRepository->save(
-            (new User())
+            $user
                 ->setName($command->getName())
                 ->setType($command->getType())
                 ->setDocument($command->getDocument())

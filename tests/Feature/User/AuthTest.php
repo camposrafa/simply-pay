@@ -2,20 +2,11 @@
 
 namespace Tests\Feature\User;
 
-use App\Domain\Models\User;
-use Tests\CreatesApplication;
-use Tests\InteractWithUsers;
+use App\Domain\Application\Exceptions\ModelNotFoundException;
 use Tests\TestCase;
 
 class AuthTest extends TestCase
 {
-    use CreatesApplication, InteractWithUsers;
-
-    /**
-     * @var User
-     */
-    protected User $user;
-
     public function testUserCanLoginWhitCorrectInfo(): void
     {
         $response = $this->post('/auth', ['email' => 'user_common@email.com.br', 'password' => '12345678']);
@@ -23,12 +14,11 @@ class AuthTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
     }
 
-    public function testGetInfoUserLogged(): void
+    public function testUserCantLoginWhitIncorrectEmail(): void
     {
-        $this->setUpUser();
-        $response = $this->get('/logged');
+        $this->expectException(ModelNotFoundException::class);
+        $this->expectExceptionMessage("user not found!");
 
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertEquals('200', $response->getStatusCode());
+        $this->post('/auth', ['email' => 'user_commona@email.com.br', 'password' => '12345678']);
     }
 }

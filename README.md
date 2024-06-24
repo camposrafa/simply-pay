@@ -14,7 +14,7 @@ Plataforma de usuários comuns e lojistas que podem efetuar pagamentos e depósi
 - Clone o repositório
 - Certifique-se de ter o docker instalado em sua máquina
 - Execute o comando **make dev**
-    - Esse comando instalará todas as imagens necessárias para que o projeto esteja pronto para utilização, bem como efetuará as migrations, seeders e criação dos clients do passport para o controle de acesso.
+    - Esse comando instalará todas as imagens (php8.2, mysql, nginx, redis)necessárias para que o projeto esteja pronto para utilização, bem como efetuará as migrations, seeders e criação dos clients do passport para o controle de acesso.
 
 ## Endpoints
 Dispoível também para utilização via [POSTMAN](https://www.postman.com/warped-eclipse-904999/workspace/sp/collection/13893383-c6e50ccc-6ff7-409c-bbe2-2d1e02eed392?action=share&creator=13893383
@@ -51,7 +51,7 @@ Dispoível também para utilização via [POSTMAN](https://www.postman.com/warpe
  - Rota: /logout
  - Método DELETE
 
- **Payment**
+**Payment**
 Realize pagamentos através dessa rota
  - Rota: /payment
  - Método POST
@@ -60,6 +60,7 @@ Realize pagamentos através dessa rota
     "amount": 100
 }``
 
+**Payment**
  Veja o histórico de pagamentos através dessa rota
  - Rota: /payment
  - Método GET
@@ -73,22 +74,18 @@ Realize pagamentos através dessa rota
  - Rota: user/{id}/wallet
  - Método GET
 
- Efetue um depósito através dessa rota ()
- - Rota: user/{id}/wallet
- - Método POST
- - Payload {
-    "balance": 100
-}
-
 ## Processamento Assincrono
 
-A transação consulta um processo de autorização e posteriormente o envio de uma notificação por email. Esse processo é consultado em segundo plano.
-Para que os processos sejam executados, é necessário executar os seguintes comandos em seu terminal:
-´´make queue-work´´
-´´make queue-listen´´
+Quando um pagamento é efetuado, a api consulta um processo de autorização externo e posteriormente o envia uma notificação por email informando ao usuário se houve sucesso em sua ação ou não. Esse processo é trabalhado em segundo plano, especificamente em uma fila utilizando o redis.
+Para que os processos sejam executados, são necessários dois passos:
 
-*Detalhe importante:* para que o projeto funcione de maneira mais leve em seu ambiente local, recomendamos que siga os passos anteriores, mas em ambientes de stage ou produção,
-é necessário a configuração de um supervisor ([Leia mais aqui](https://laravel.com/docs/10.x/queues#supervisor-configuration))
+1 - Atualizar em seu arquivo de configuração (.env) a opção QUEUE_CONNECTION=redis
+
+2 - Executar os seguintes comandos em seu terminal:
+´´make queue-work´´
+´´make queue-listen´´ 
+
+*Detalhe importante:* para que o projeto funcione de maneira mais leve em seu ambiente local, recomendamos que siga os passos anteriores, mas em ambientes de stage ou produção, é necessário a configuração de um supervisor ([Leia mais aqui](https://laravel.com/docs/10.x/queues#supervisor-configuration))
 
 ## Monitoramento de qualidade
 

@@ -1,26 +1,15 @@
 <?php
 
-namespace Tests\Unit\User\Wallet;
+namespace Tests\Unit\App\Domain\Application\User\Wallet;
 
 use App\Domain\Application\User\Wallet\Show\Command;
 use App\Domain\Application\User\Wallet\Show\Handler;
-use App\Domain\Models\User;
-use App\Domain\Models\Wallet;
 use Illuminate\Support\Facades\App;
-use Tests\CreatesApplication;
-use Tests\InteractWithUsers;
 use Tests\TestCase;
 
 class ShowWalletTest extends TestCase
 {
-    use CreatesApplication, InteractWithUsers;
-
-    /**
-     * @var User
-     */
-    protected User $user;
-
-    public function testListUserWallet(): void
+    public function testShowUserWallet(): void
     {
         $this->setUp();
         $handler = App::make(Handler::class);
@@ -29,6 +18,8 @@ class ShowWalletTest extends TestCase
             ['user_id' => 1]
         ));
 
-        $this->assertEquals(Wallet::class, $wallet);
+        $this->assertNotNull($wallet);
+        $this->assertEquals(1, $wallet->getUserId());
+        $this->assertNotNull($wallet->getBalance());
     }
 }
