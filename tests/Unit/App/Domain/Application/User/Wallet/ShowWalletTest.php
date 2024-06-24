@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\User\Wallet;
+namespace Tests\Unit\App\Domain\Application\User\Wallet;
 
 use App\Domain\Application\User\Wallet\Show\Command;
 use App\Domain\Application\User\Wallet\Show\Handler;

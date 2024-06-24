@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Payment;
+namespace Tests\Unit\App\Domain\Application\Payment;
 
 use App\Domain\Application\Payment\List\Command;
 use App\Domain\Application\Payment\List\Handler;

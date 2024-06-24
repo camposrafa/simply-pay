@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\User;
+namespace Tests\Unit\App\Domain\Application\User;
 
 use App\Domain\Application\Exceptions\ResourceAlreadyExists;
 use App\Domain\Application\User\Create\Command;
@@ -8,7 +8,6 @@ use App\Domain\Application\User\Create\Handler;
 use App\Domain\Enum\User\Document;
 use App\Domain\Enum\User\Type;
 use App\Domain\Models\UserCommon;
-use Database\Factories\UserCommonFactory;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\App;
 use Tests\TestCase;
